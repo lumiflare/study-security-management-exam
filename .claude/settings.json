@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "ConversationStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"📅 今日: $(date '+%Y年%m月%d日(%a)') | 試験日: 2026年4月26日(日) | 残り: $(( ($(date -j -f '%Y-%m-%d' '2026-04-26' '+%s') - $(date '+%s')) / 86400 ))日\" && echo '---' && echo '📋 今日の学習予定:' && cat /Users/shim/study/security-management-exam/study-plan.md 2>/dev/null | grep -A 5 \"$(date '+%-m/%-d')\" || echo '学習計画を確認してください'"
+          }
+        ]
+      }
+    ]
+  }
+}
