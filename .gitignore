@@ -1,1 +1,12 @@
+# Claude Code: ローカル個人設定（MCP 認証など）
+.claude/settings.local.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# エディタ
 .idea
+.vscode/
+*.swp
+*~

@@ -1,4 +1,16 @@
 {
+  "permissions": {
+    "allow": [
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(date:*)",
+      "Bash(wc:*)",
+      "Bash(grep:*)",
+      "Bash(tail:*)",
+      "Bash(head:*)",
+      "Bash(find:*)"
+    ]
+  },
   "hooks": {
     "ConversationStart": [
       {
@@ -6,7 +18,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"📅 今日: $(date '+%Y年%m月%d日(%a)') | 試験日: 2026年4月26日(日) | 残り: $(( ($(date -j -f '%Y-%m-%d' '2026-04-26' '+%s') - $(date '+%s')) / 86400 ))日\" && echo '---' && echo '📋 今日の学習予定:' && cat /Users/shim/study/security-management-exam/study-plan.md 2>/dev/null | grep -A 5 \"$(date '+%-m/%-d')\" || echo '学習計画を確認してください'"
+            "command": "EXAM_DATE='2026-04-26' && TODAY=$(date '+%Y-%m-%d') && DAYS=$(( ($(date -j -f '%Y-%m-%d' \"$EXAM_DATE\" '+%s') - $(date -j -f '%Y-%m-%d' \"$TODAY\" '+%s')) / 86400 )) && echo \"📅 今日: $(date '+%Y年%m月%d日(%a)') | 試験日: 2026年4月26日(日)\" && if [ \"$DAYS\" -gt 0 ]; then echo \"⏳ 試験まで: あと${DAYS}日\"; elif [ \"$DAYS\" -eq 0 ]; then echo \"🎯 本日が試験日！\"; else echo \"✅ 試験終了（${DAYS#-}日経過）— 復習・FE学習への引き継ぎモード\"; fi && echo '---' && echo '📋 学習計画から本日の予定:' && cat \"$CLAUDE_PROJECT_DIR/study-plan.md\" 2>/dev/null | grep -A 3 \"$(date '+%-m/%-d')\" || echo '（study-plan.md を直接ご確認ください）' && echo '---' && echo '🔥 直近の弱点（wrong-answers.md 末尾3件）:' && tail -n 50 \"$CLAUDE_PROJECT_DIR/progress/wrong-answers.md\" 2>/dev/null | grep -E '^## ' | tail -n 3 || echo '（誤答記録なし）'"
           }
         ]
       }
